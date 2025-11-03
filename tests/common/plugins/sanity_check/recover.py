@@ -62,8 +62,10 @@ def _recover_interfaces(dut, fanouthosts, result, wait_time):
             fanout.no_shutdown(fanout_port)
         if dut.facts["num_asic"] > 1:
             asic = dut.get_port_asic_instance(port)
+            dut.asic_instance(asic.asic_index).shutdown_interface(port)
             dut.asic_instance(asic.asic_index).startup_interface(port)
         else:
+            dut.shutdown(port)
             dut.no_shutdown(port)
     wait(wait_time, msg="Wait {} seconds for interface(s) to restore.".format(wait_time))
     return action
